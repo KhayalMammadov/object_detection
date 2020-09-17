@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+<head>
+  <title></title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="{% static 'css/gallery-index.css' %}"/>
+    <link type="text/css" rel="stylesheet" href="{% static 'css/main-toolbar-css.css' %}"/>
+    <style type="text/css">
+      body {
+          background: #76b852;
+          /* fallback for old browsers */
+          background: -webkit-linear-gradient(to top, #76b852, #8DC26F);
+          background: -moz-linear-gradient(to top, #76b852, #8DC26F);
+          background: -o-linear-gradient(to top, #76b852, #8DC26F);
+          background: linear-gradient(to top, #76b852, #8DC26F);
+          background-size: cover;
+          background-attachment: fixed;
+          font-family: 'Roboto', sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <div id="wrap">
+        {% include 'detection/_main_toolbar.html' %}
+        <section class="carousel-container">
+            {% if not current_url %}
+                <img src="{% static 'image/initial_image.png' %}" alt="" class="current-image">
+            {% else %}
+                <img src="{{ current_url }}" alt="" class="current-image">
+            {% endif %}
+            <span class="arrow arrow-left"><img src="{% static 'image/prev.png' %}" style="width: 30px!important; height: 30px"></span>
+            <ul class="next-list">
+                {% for image in images %}
+                    {% if forloop.counter == 1 %}
+                        <li><img src="{{ image.file.url }}" alt="" class="image-of-list current-image-list"></li>
+                    {% else %}
+                    <li><img src="{{ image.file.url }}" alt="" class="image-of-list"></li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+            <span class="arrow arrow-right"><img src="{% static 'image/next.png' %}" style="width: 30px!important; height: 30px"></span>
+        </section>
+        {% include 'detection/_save_mask_modal.html' %}
+        {% include 'detection/_auto_detection_modal.html' %}
+    </div>
+{#  Gallery Js  #}
+<script type="text/javascript" src="{% static 'js/gallery-index.js' %}"></script>
+{#  BootStrap JS  #}
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+<script>
+  AOS.init();
+</script>
+
+<!-- Your code to create an instance of Fine Uploader and bind to the DOM/template
+====================================================================== -->
+<script>
+    var pencilSelcted = false;
+    function toolbarItemClicked(id){
+        $(".main-toolbar-item").css('border', 'none');
+        let items = $('.main-toolbar-item');
+        let keys = Object.keys(items);
+        for (const key of keys.slice(0, 5)){
+            let item_id = items[key].id
+            $("#"+item_id).removeClass(item_id+"_selected");
+            if (id === items[key].id) {deafaul
+                $("#"+item_id).addClass(item_id+"_selected");
+            }
+        }
+    }
+    function upload_images(){
+        location.replace("{% url 'detection:upload' %}");
+    }
+    function manageImages(){
+        location.replace("{% url 'detection:manage_images' %}");
+    }
+    function logout(){
+        location.replace("{% url 'logout' %}");
+    }
+    $(document).ready(function (){
+        $(".image-of-list").click(function (){
+            $("#image_url").val(Object.values(document.getElementsByClassName("current-image"))[0].getAttribute('src'));
+        });
+        $("#manual_icon").click(function (){
+            const image_src = Object.values(document.getElementsByClassName("current-image"))[0].getAttribute('src');
+            if (image_src.toString().includes('initial_image')){
+                alert('You should select the images what you are going to make the masks.')
+            }
+            else{
+                location.replace('/detection/draw-mask?url='+image_src);
+            }
+            $("#manual-toolbar").addClass("show");
+        });
+        $(".no-submenu").click(function (){
+            $("#manual-toolbar").removeClass("show");
+        });
+        {#$("#models")#}
+        {#    .change(function() {#}
+        {#        var modelType = "";#}
+        {#        $( "select option:selected" ).each(function() {#}
+        {#          modelType += $( this ).text() + " ";#}
+        {#        });#}
+        {#        $.ajax({#}
+        {#            url: "{% url 'detection:get_class_list' %}",#}
+        {#            type: "GET",#}
+        {#            data: {#}
+        {#                "model_type": modelType#}
+        {#            },#}
+        {#            dataType: 'json',#}
+        {#            success: function (result) {#}
+        {#                const classNames = result['class_names'];#}
+        {#                for (let key in classNames){#}
+        {#                    console.log(classNames[key]);#}
+        {#                    $("#default").append("<option value="+classNames[key]+">"+classNames[key]+"</option>");#}
+        {#                }#}
+        {#            }#}
+        {#        });#}
+        {#    })#}
+        {#    .trigger("change");#}
+    });
+</script>
+
+</body>
+</html>

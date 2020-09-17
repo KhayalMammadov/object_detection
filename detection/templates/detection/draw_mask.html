@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+<head>
+    <title>Example using jPolygon</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <style rel="stylesheet">
+        body {
+          background: #76b852;
+          /* fallback for old browsers */
+          background: -webkit-linear-gradient(to top, #76b852, #8DC26F);
+          background: -moz-linear-gradient(to top, #76b852, #8DC26F);
+          background: -o-linear-gradient(to top, #76b852, #8DC26F);
+          background: linear-gradient(to top, #76b852, #8DC26F);
+          background-size: cover;
+          background-attachment: fixed;
+          font-family: 'Roboto', sans-serif;
+        }
+        #image-container{
+            box-shadow: 0 4px 8px 0 rgba(255, 255, 255, 0.6), 0 6px 20px 0 rgba(255, 255, 255, 0.7);
+            float:left;
+            overflow: auto;
+            max-width: 100%;
+            max-height: 90vh;
+            align-items: center;
+        }
+        #gotohome{
+            background-image: url("{% static 'image/PNG/gotohome.PNG' %}");
+            height: 50px;
+            width: 50px;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            position: absolute;
+            top: 1vh;
+            right: 4vw;
+            border-radius: 100%;
+            box-shadow: 0 4px 8px 0 rgba(255, 255, 255, 0.3), 0 6px 20px 0 rgba(255, 255, 255, 0.2);
+        }
+        #gotohome:hover{
+            background-image: url("{% static 'image/PNG/gotohome_hover.PNG' %}");
+            box-shadow: 0 4px 8px 0 rgba(255, 255, 255, 0.6), 0 6px 20px 0 rgba(255, 255, 255, 0.7);
+            transition: background-image 0.5s ;
+        }
+
+        #image-edit-panel{
+        }
+
+        #clear_icon{
+            background-image: url("{% static 'image/PNG/clear.PNG' %}");
+            height: 50px;
+            width: 50px;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            border-radius: 100%;
+
+            position: relative;
+            top: -50px;
+            left: 80px;
+            box-shadow: 0 4px 8px 0 rgba(255, 255, 255, 0.3), 0 6px 20px 0 rgba(255, 255, 255, 0.2);
+        }
+        #clear_icon:hover{
+            background-image: url("{% static 'image/PNG/clear_hover.PNG' %}");
+            box-shadow: 0 4px 8px 0 rgba(255, 255, 255, 0.6), 0 6px 20px 0 rgba(255, 255, 255, 0.7);
+            transition: background-image 0.5s ;
+        }
+        #undo_icon{
+            background-image: url("{% static 'image/PNG/undo.PNG' %}");
+            height: 50px;
+            width: 50px;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            border-radius: 100%;
+            position: relative;
+            box-shadow: 0 4px 8px 0 rgba(255, 255, 255, 0.3), 0 6px 20px 0 rgba(255, 255, 255, 0.2);
+        }
+        #undo_icon:hover{
+            background-image: url("{% static 'image/PNG/undo_hover.PNG' %}");
+            box-shadow: 0 4px 8px 0 rgba(255, 255, 255, 0.6), 0 6px 20px 0 rgba(255, 255, 255, 0.7);
+            transition: background-image 0.5s ;
+        }
+        .info-panel{
+            margin-top: -2vh;
+            box-shadow: 0 4px 8px 0 rgba(255, 255, 255, 0.4), 0 6px 20px 0 rgba(255, 255, 255, 0.5);
+        }
+
+        .tip::before{
+            content: url("{% static 'image/PNG/tip.PNG' %}");
+        }
+
+        .cus-tooltip-top .tooltiptext-top {
+            visibility: hidden;
+            width: 120px;
+            background-color: gray;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 5px 0;
+            position: absolute;
+            z-index: 1;
+            bottom: 120%;
+            left: 50%;
+            margin-left: -60px;
+        }
+
+        .cus-tooltip-top .tooltiptext-top::after {
+          content: "";
+          position: absolute;
+          top: 100%;
+          left: 50%;
+          margin-left: -5px;
+          border-width: 5px;
+          border-style: solid;
+          border-color: white transparent transparent transparent;
+        }
+
+        .cus-tooltip-top:hover .tooltiptext-top {
+          visibility: visible;
+        }
+
+        .btn-primary{
+            background-color: #2196F3!important; /* Blue */
+        }
+        .btn-primary:hover {
+            background: #0b7dda!important;
+        }
+        .btn-danger{
+            background-color: #f44336!important;
+        }
+        .btn-danger:hover{
+            background: #da190b!important;
+        }
+    </style>
+</head>
+{% include 'detection/_manual_toolbar.html' %}
+<body onload="clear_canvas()">
+<div class="container-fluid mt-5 w-100 h-100 mw-100 mh-100">
+    <div class="row">
+        <div class="col-xl-9 col-lg-7, col-md-8 d-flex justify-content-center align-items-center">
+            <div id="image-container">
+                <canvas id="jPolygon" width="{{ width }}" height="{{ height }}" style="cursor:crosshair" data-imgsrc="{{ image_url }}" onmousedown="point_it(event)" oncontextmenu="return false;">
+                    Your browser does not support the HTML5 canvas tag.
+                </canvas>
+            </div>
+        </div>
+
+        <div id="image-edit-panel" class="col-xl-3 col-lg-4, col-md-4 p-5">
+            <div class="mt-4">
+                <div id="undo_icon" class="cus-tooltip-top" onclick="undo()"><span class="tooltiptext-top">Undo</span></div>
+                <div id="clear_icon" class="cus-tooltip-top" onclick="clear_canvas()"><span class="tooltiptext-top">Clear</span></div>
+            </div>
+            <div class="info-panel bg-info rounded p-3">
+                <p class="tip"></p>
+                <p class="text-white">Press <strong class="text-warning">Left Click</strong> to draw a point.</p>
+                <p class="text-white"><strong class="text-warning">CTRL+Click</strong> or <strong class="text-warning">Right Click</strong> to close the polygon.</p>
+            </div>
+
+            <div class="mt-5">
+                <p class="d-flex justify-content-center">
+                    <span class="text-white">Train: </span><span id="train_num" class="ml-3 text-danger"> {{ train_num }}</span>
+                    <span class="ml-5 text-white">Validation: </span><span id="valid_num" class="ml-3 text-danger"> {{ valid_num }}</span>
+                </p>
+                <hr class="bg-white">
+            </div>
+
+            <form class="form-group mt-5" method="POST">
+                {% csrf_token %}
+                <label for="new_class"><b class="text-white">New Class: </b></label>
+                <input id="new_class" class="form-control" name="class_name" placeholder="Please input a new class name..." required/>
+                <div class="form-check form-check-inline mt-2 d-flex justify-content-center">
+                    <input type="radio" id="train" class="form-check-input" name="mask_type" value="train" checked>
+                    <label for="train" class="text-white ml-3">Train</label>
+                    <input type="radio" id="valid" class="form-check-input ml-5" name="mask_type" value="valid">
+                    <label for="valid" class="text-white ml-3">Valid</label>
+                    <input type="text" value="{{ image_url }}" hidden name="image_url" />
+                    <input type="text" id="for_coordinates" hidden name="coordinates" />
+                </div>
+                <div>
+                    <div id="save_icon" class="submenu cus-tooltip-left mt-3 float-left ml-5" onClick="willSubmit()"><span class="tooltiptext-left"> Save Mask </span></div>
+                    <div id="manual_training" class="submenu cus-tooltip-left float-right mt-3 mr-5"><span class="tooltiptext-left"> Training </span></div>
+                </div>
+
+                <button type="submit" id="will_submit" hidden></button>
+            </form>
+            <div>
+                <textarea id="coordinates" disabled="disabled" style="width:300px; height:200px;" hidden></textarea>
+            </div>
+            <div id="gotohome" class="cus-tooltip-top" onclick="javascript:goToHome()"><span class="tooltiptext-top">Go To Home</span></div>
+        </div>
+    </div>
+
+    {% include 'detection/_alert_messages.html' %}
+</div>
+
+<script type="text/javascript" src="{% static 'js/jPolygon.js' %}"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script>
+    function goToHome(){
+        location.replace("/detection/home?url={{ image_url }}");
+    }
+    function willSubmit(){
+        $('#for_coordinates').val($("#coordinates").val());
+        console.log($("#for_coordinates").val());
+        $("#will_submit").click();
+    }
+    $(document).ready(function (){
+        $("#manual_training").click(function (){
+            const token = "{{ csrf_token }}";
+            const train_num = "{{ train_num }}";
+            const valid_num = "{{ valid_num }}";
+            if (train_num >= 10 && valid_num >= 5)
+            {
+                $.ajax({
+                    headers: { "X-CSRFToken": token },
+                    url: "{% url 'detection:train_model' %}",
+                    type: 'POST',
+                    success: function (response){
+                        console.log(response)
+                    }
+                });
+            }
+            else{
+                alert("Please prepare more masks.")
+            }
+        });
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,26 @@
+version: '3.3'
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
+    command: gunicorn object_detection.wsgi:application --bind 0.0.0.0:8000
+    volumes:
+      - static_volume:/home/ubuntu/object_detection/static
+      - media_volume:/home/ubuntu/object_detection/media
+    expose:
+      - 8000
+  nginx:
+    build: ./nginx
+    volumes:
+      - static_volume:/home/ubuntu/object_detection/static
+      - media_volume:/home/ubuntu/object_detection/media
+    ports:
+      - 8000:80
+    depends_on:
+      - web
+
+volumes:
+  static_volume:
+  media_volume:

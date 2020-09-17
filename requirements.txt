@@ -1,0 +1,16 @@
+django
+django-crispy
+pillow
+tensorflow==1.14
+keras==2.2.5
+clint
+crontab
+tablib
+docopt
+# coco
+scikit-image
+IPython
+imgaug
+pycocotools
+jinja2
+gunicorn

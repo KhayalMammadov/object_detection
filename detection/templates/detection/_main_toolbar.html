@@ -1,0 +1,146 @@
+{% load static %}
+<style>
+    .main-toolbar-item:hover{
+        cursor: pointer;
+    }
+    .main-toolbar{
+        position: absolute;
+        box-shadow: 0 4px 8px 0 rgba(255, 255, 255, 0.3), 0 6px 20px 0 rgba(255, 255, 255, 0.2);
+        top: 3vh;
+        left: 2vw;
+        z-index: 99999;
+    }
+    .main-toolbar:hover{
+        box-shadow: 0 4px 8px 0 rgba(255, 255, 255, 0.6), 0 6px 20px 0 rgba(255, 255, 255, 0.5);
+    }
+
+    #upload_icon{
+        background-image: url("{% static 'image/PNG/upload.PNG' %}");
+        height: 50px;
+        width: 50px;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        position: relative;
+    }
+    #upload_icon:hover{
+        background-image: url("{% static 'image/PNG/upload_hover.PNG' %}");
+        transition: background-image 0.5s ;
+    }
+
+    .upload_icon_selected{
+        background-image: url("{% static 'image/PNG/upload_hover.PNG' %}")!important;
+        border: solid 2px white!important;
+    }
+
+    #manual_icon{
+        background-image: url("{% static 'image/PNG/manual.PNG' %}");
+        height: 50px;
+        width: 50px;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        position: relative;
+    }
+    #manual_icon:hover{
+        background-image: url("{% static 'image/PNG/manual_hover.png' %}");
+        transition: background-image 0.5s ;
+    }
+    .manual_icon_selected{
+        background-image: url("{% static 'image/PNG/manual_hover.PNG' %}")!important;
+        border: solid 2px white!important;
+    }
+
+    #automatic_icon{
+        background-image: url("{% static 'image/PNG/automatic.png' %}");
+        height: 50px;
+        width: 50px;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        position: relative;
+    }
+    #automatic_icon:hover{
+        background-image: url("{% static 'image/PNG/automatic_hover.png' %}");
+        transition: background-image 0.5s ;
+    }
+    .automatic_icon_selected{
+        background-image: url("{% static 'image/PNG/automatic_hover.PNG' %}")!important;
+        border: solid 2px white!important;
+    }
+
+    #add_icon{
+        background-image: url("{% static 'image/PNG/add.png' %}");
+        height: 50px;
+        width: 50px;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        position: relative;
+    }
+    #add_icon:hover{
+        background-image: url("{% static 'image/PNG/add_hover.PNG' %}");
+        transition: background-image 0.5s ;
+    }
+    .add_icon_selected{
+        background-image: url("{% static 'image/PNG/add_hover.PNG' %}")!important;
+        border: solid 2px white!important;
+    }
+
+    #logout_icon{
+        background-image: url("{% static 'image/PNG/logout.PNG' %}");
+        height: 50px;
+        width: 50px;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        position: relative;
+    }
+    #logout_icon:hover{
+        background-image: url("{% static 'image/PNG/logout_hover.PNG' %}");
+        transition: background-image 0.5s ;
+    }
+    .logout_icon_selected{
+        background-image: url("{% static 'image/PNG/logout_hover.PNG' %}")!important;
+        border: solid 2px white!important;
+    }
+
+    .cus-tooltip-right .tooltiptext-right {
+        visibility: hidden;
+        width: 120px;
+        background-color: gray;
+        color: #fff;
+        text-align: center;
+        border-radius: 6px;
+        padding: 5px 0;
+        position: absolute;
+        z-index: 1;
+        top: 8px;
+        left: 110%;
+    }
+
+    .cus-tooltip-right .tooltiptext-right::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        right: 100%;
+        margin-top: -5px;
+        border-width: 5px;
+        border-style: solid;
+        border-color: transparent white transparent transparent;
+        animation: fadein 2s;
+    }
+    .cus-tooltip-right:hover .tooltiptext-right {
+        visibility: visible;
+        animation: fadein 2s;
+    }
+</style>
+
+<div class="main-toolbar" data-aos="fade-right">
+    <div id="upload_icon" class="main-toolbar-item cus-tooltip-right no-submenu" onclick=upload_images("upload_icon") data-toggle="modal" data-target="#upload-images"><span class="tooltiptext-right"> Upload Images </span></div>
+    <div id="manual_icon" class="main-toolbar-item cus-tooltip-right" onclick=toolbarItemClicked("manual_icon")><span class="tooltiptext-right">Training</span></div>
+    <div id="automatic_icon" class="main-toolbar-item cus-tooltip-right no-submenu" onclick=toolbarItemClicked("automatic_icon") data-toggle="modal" data-target="#auto-detection"><span class="tooltiptext-right">Detection</span></div>
+    <div id="add_icon" class="main-toolbar-item cus-tooltip-right no-submenu" onclick=manageImages("add_icon")><span class="tooltiptext-right">Add More...</span></div>
+{#    <div id="logout_icon" class="main-toolbar-item cus-tooltip-right no-submenu" onclick=toolbarItemClicked("logout_icon")><span class="tooltiptext-right">Logout</span></div>#}
+    <div id="logout_icon" class="main-toolbar-item cus-tooltip-right no-submenu" onclick=logout()><span class="tooltiptext-right">Logout</span></div>
+</div>

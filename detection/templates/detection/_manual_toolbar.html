@@ -1,0 +1,69 @@
+{% load static %}
+
+<style>
+    #manual_training{
+        background-image: url("{% static 'image/PNG/manual_training.PNG' %}");
+        height: 50px;
+        width: 50px;
+        border-radius: 100%;
+        box-shadow: 0 4px 8px 0 rgba(255, 255, 255, 0.3), 0 6px 20px 0 rgba(255, 255, 255, 0.2);
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        position: relative;
+    }
+    #manual_training:hover{
+        background-image: url("{% static 'image/PNG/manual_training_hover.PNG' %}");
+        transition: background-image 0.5s ;
+        box-shadow: 0 4px 8px 0 rgba(255, 255, 255, 0.6), 0 6px 20px 0 rgba(255, 255, 255, 0.7);
+    }
+
+    #save_icon{
+        background-image: url("{% static 'image/PNG/save.PNG' %}");
+        height: 50px;
+        width: 50px;
+        border-radius: 100%;
+        box-shadow: 0 4px 8px 0 rgba(255, 255, 255, 0.3), 0 6px 20px 0 rgba(255, 255, 255, 0.2);
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        position: relative;
+    }
+    #save_icon:hover{
+        background-image: url("{% static 'image/PNG/save_hover.PNG' %}");
+        transition: background-image 0.5s ;
+        box-shadow: 0 4px 8px 0 rgba(255, 255, 255, 0.6), 0 6px 20px 0 rgba(255, 255, 255, 0.7);
+    }
+
+    .cus-tooltip-left .tooltiptext-left {
+        visibility: hidden;
+        width: 120px;
+        background-color: gray;
+        color: #fff;
+        text-align: center;
+        border-radius: 6px;
+        padding: 5px 0;
+        position: absolute;
+        z-index: 1;
+        top: 8px;
+        right: 110%;
+    }
+
+    .cus-tooltip-left .tooltiptext-left::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 100%;
+        margin-top: -5px;
+        border-width: 5px;
+        border-style: solid;
+        border-color: transparent transparent transparent white;
+        animation: fadein 2s;
+    }
+    .cus-tooltip-left:hover .tooltiptext-left {
+        visibility: visible;
+        animation: fadein 2s;
+    }
+</style>
+
+

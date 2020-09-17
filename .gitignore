@@ -1,0 +1,6 @@
+venv
+db.sqlite3
+media/ml/image/*
+detection/ml/assets/*
+media/ml/users/images/*
+media/models/*
