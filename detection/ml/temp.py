@@ -79,6 +79,7 @@ def detect_and_color_splash(model, image_path=None, video_path=None):
         # file_name = "splash_{:%Y%m%dT%H%M%S}.png".format(datetime.datetime.now())
         file_name = os.path.join(settings.STATIC_DIR, "ml", "temp.jpg")
         skimage.io.imsave(file_name, splash)
+        return len(r['class_ids'])
     elif video_path:
         import cv2
         # Video capture
@@ -173,5 +174,5 @@ def detect(model_path, image_url):
         # train(model, dataset, config)
         pass
     else:
-        detect_and_color_splash(model, image_path=image,
+        return detect_and_color_splash(model, image_path=image,
                                 video_path=None)

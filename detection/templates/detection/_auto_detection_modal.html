@@ -17,13 +17,15 @@
               <option value="default">default</option>
               <option value="model_1">model_1</option>
               <option value="model_2">model_2</option>
+              <option value="model_3">model_3</option>
             </select>
             <label for="masks" class="mt-4">Classes: </label>
             <select id="masks" name="masks" class="selectpicker form-control" multiple title="Choose something of the following..." required>
                 {% for class_name in class_names %}
 {#                    <option value="{{ class_name }}" {% if forloop.counter == 1 %}selected{% endif %}>{{ class_name }}</option>#}
                 {% endfor %}
-                <option value="sugar cane" selected>Sugar Cane</option>
+{#                <option value="sugar cane" selected>Sugar Cane</option>#}
+                <option value="sugar cane" selected>Stress</option>
             </select>
             <input id="image_url" name="image_url" hidden/>
         </form>

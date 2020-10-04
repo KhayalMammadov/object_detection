@@ -286,6 +286,10 @@ def auto_detection(request):
         model_path = 'mask_rcnn_object_0010.h5'
         detect(model_path=model_path, image_url=image_url)
         return render(request, "detection/detection_result.html", {'data': {"Sugar Cane": "34"}})
+    if model_name == 'model_3':
+        model_path = 'mask_rcnn_object_0029.h5'
+        count = detect(model_path=model_path, image_url=image_url)
+        return render(request, "detection/detection_result.html", {'data': {"Stress": count}})
     result = auto_detection_coco(model_path, img_url, class_names_list)
     detected_class = [class_names_list[id] for id in result['class_ids']]
     detected_class_keys = set(detected_class)
